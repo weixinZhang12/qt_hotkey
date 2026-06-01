@@ -9,8 +9,7 @@ use global_hotkey::{
 
 use crate::{
     code::{
-        digit_to_modifier, digit_to_mycode, enum_modefiers_to_tauri_modefiers,
-        mycode_to_global_code,
+        digit_to_modifier, digit_to_mycode,
     },
     error::Status,
 };
@@ -37,23 +36,21 @@ pub fn glm_mut() -> Option<&'static mut GlobalHotKeyManager> {
 /// # Safety
 /// 你必须保证key的范围在0-214之间（包括），modifiers的范围在 0-13之间（包括）,GLM必须初始化
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn register(modifiers: c_uchar, key: c_uchar, result: *mut c_uint) -> c_int {
+pub unsafe extern "C" fn register(modifiers: c_uchar, key: c_uchar, id: *mut c_uint) -> c_int {
     let Some(md) = digit_to_modifier(modifiers) else {
         return Status::Error.into();
     };
     let Some(glm) = glm_mut() else {
         return Status::Error.into();
     };
-    let md = enum_modefiers_to_tauri_modefiers(md);
-    let Some(my_code) = digit_to_mycode(key) else {
+    let Some(code) = digit_to_mycode(key) else {
         return Status::Error.into();
     };
-    let code = mycode_to_global_code(my_code);
     let hotkey = HotKey::new(Some(md), code);
     let Ok(_) = glm.register(hotkey) else {
         return Status::Error.into();
     };
-    unsafe { *result = hotkey.id };
+    unsafe { *id = hotkey.id };
     Status::Ok.into()
 }
 
