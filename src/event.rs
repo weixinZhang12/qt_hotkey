@@ -1,4 +1,4 @@
-use std::os::raw::{c_int, c_uchar, c_uint};
+use std::os::raw::{c_uchar, c_uint};
 
 use global_hotkey::{GlobalHotKeyEvent, HotKeyState};
 
