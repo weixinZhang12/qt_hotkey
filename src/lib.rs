@@ -76,14 +76,4 @@ pub unsafe extern "C" fn init_glm() -> c_int {
     Status::Fail.into()
 }
 
-#[cfg(test)]
-mod test {
-    use global_hotkey::GlobalHotKeyEvent;
 
-    #[test]
-    fn feature() {
-        if let Ok(event) = GlobalHotKeyEvent::receiver().try_recv() {
-            println!("{:?}", event);
-        }
-    }
-}
