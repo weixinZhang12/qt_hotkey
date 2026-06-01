@@ -1,7 +1,6 @@
-use std::{
-    os::raw::{c_int, c_uchar, c_uint},
-    sync::{LazyLock, Mutex, mpsc::Receiver},
-};
+use std::
+    os::raw::{c_int, c_uchar, c_uint}
+;
 
 use global_hotkey::{
     GlobalHotKeyManager,
